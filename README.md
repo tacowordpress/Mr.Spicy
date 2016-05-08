@@ -44,10 +44,10 @@ These are the properties and values (defaults shown below) that can be used to s
       'fields' => array(),
       'css_class' => '',
       'id' => '',
-      'method' => 'post',
+      'method' => 'post', // currently only works with POST
       'action' => null,
       'novalidate' => false,
-      'use_ajax' => false,
+      'use_ajax' => false, // coming soon
       'hide_labels' => false,
       'column_classes' => 'small-12 columns',
       'exclude_post_content' => false,
