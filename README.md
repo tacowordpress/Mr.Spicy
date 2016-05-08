@@ -63,7 +63,7 @@ These are the properties and values (defaults shown below) that can be used to s
 Details on what each property/value does is coming soon.
 
 ## Customizing how the form gets rendered
-The simplicity of Mr. Spicy forms doesn't stop with the above. Custom rendering of a form is also a breeze and comes with a few different options.
+The simplicity of Mr. Spicy doesn't stop with the above. Custom rendering of a form is also a breeze and comes with a few different options.
 
 ##### Example 1
 ```php
