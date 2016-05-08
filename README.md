@@ -1,6 +1,6 @@
 # Mr. Spicy forms
 
-The objective of Mr. Spicy forms in tangent with this boilerplate, it to literally allow you to make a form in less than 2 minutes. It's an API that taps into TacoWordPress to create Form configuration post types that allow both you the developer as well as the client admin to setup.
+The objective of Mr. Spicy (forms), is to literally allow you to make a form in less than 2 minutes. It's an API that taps into TacoWordPress to create form configuration post types that allow both you the developer as well as the client admin to setup.
 
 ## A Basic example
 ```php
@@ -26,7 +26,14 @@ echo $contact_form_config->render();
 
 All of that gives you a form in the frontend that visitors can fill out, and be recorded as an entry post type in WordPress. It also gives the admin access to overriding common settings like admin emails (for notifications), success, and error messages.
 
-#### MrSpicy API configuration settings
+#### Mr. Spicy Requirements
+
+* Mr. Spicy currently requries the "taco-2016-boilerplate" located [here](https://github.com/tacowordpress/taco-2016-boilerplate). This will be fixed soon.
+* PHP >=5.4.0
+* TacoWordPress
+
+
+#### Mr. Spicy API configuration settings
 
 These are the properties and values (defaults shown below) that can be used to setup a form configuration.
 
