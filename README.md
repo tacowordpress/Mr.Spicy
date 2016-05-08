@@ -1,6 +1,6 @@
 # Mr. Spicy
 
-The objective of Mr. Spicy (forms), is to literally allow you to make a form in less than 2 minutes. It's an API that taps into TacoWordPress to create form configuration post types that allow both you the developer as well as the client admin to setup.
+The objective of Mr. Spicy (forms), is to literally allow you to make a form in less than 2 minutes. It might feel as if you're on fire! It's an API that taps into TacoWordPress to create form configuration post types that allow both you the developer as well as the client admin to setup.
 
 ## A Basic example
 ```php
