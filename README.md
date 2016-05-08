@@ -340,7 +340,7 @@ You can do this.
 
 ###### Fields custom (not auto)
 Maybe you don't want any of the "%%" template syntax for field defining and rendering and just want to do your own thing. Be our guest. You can type
-the form fields out how you would normally do it. Just keep the field names the same as the configuration. If you want the error messages and values to populate after submission, you still have to use the "%%" stynatx.
+the form fields out how you would normally do it. Just keep the field names the same as the configuration. If you want the error messages and values to populate after submission, you still have to use the "%%" syntax.
 
 
 ```php
