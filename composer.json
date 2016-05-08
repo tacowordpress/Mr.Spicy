@@ -5,7 +5,7 @@
   "license": "MIT",
   "keywords": ["wordpress", "form builder", "developers", "quick form creation", "tacowordpress"],
   "minimum-stability": "dev",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "require": {
     "php": ">=5.4.0"
   },
