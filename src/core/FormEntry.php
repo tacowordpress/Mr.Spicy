@@ -143,4 +143,11 @@ class FormEntry extends \Taco\Post {
   public function getAdminColumns() {
     return array('form_config');
   }
+  
+  public function getPostTypeConfig() {
+    return array_merge(parent::getPostTypeConfig(), array(
+      'show_in_menu'=>'edit.php?post_type=form-config'
+    ));
+  }
+  
 }
