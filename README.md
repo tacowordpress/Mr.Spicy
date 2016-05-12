@@ -33,6 +33,20 @@ All of that gives you a form in the frontend that visitors can fill out, and be 
 * TacoWordPress
 
 
+#### Setup
+
+1. Plese make sure to install the dependency of TacoWordPress first. https://github.com/tacowordpress/tacowordpress/
+2. Add MrSpicy to your composer.json file right after TacoWordPress:
+
+```
+{
+  "require": {
+    "tacowordpress/tacowordpress: "dev-master",
+    "tacowordpress/mr-spicy": "dev-master"
+  }
+}
+```
+
 #### Mr. Spicy API configuration settings
 
 These are the properties and values (defaults shown below) that can be used to setup a form configuration.
