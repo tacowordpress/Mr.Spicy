@@ -6,7 +6,6 @@ namespace Taco;
 
 include getenv('HTTP_BOOTSTRAP_WP'); // bootstrap WordPress
 
-
 if(array_key_exists('mrspicy_form_submission', $_POST)
   && $_POST['mrspicy_form_submission'] == true) {
   \Taco\FormSubmit::processSubmission();

@@ -56,7 +56,10 @@ class MrSpicy {
       'on_success' => null, // on success event callback,
       'use_honeypot' => false,
       'honeypot_field_name' => 'your_webite_url',
-      'test_with_fakes' => false, // coming soon
+      'test_with_fakes' => false, // coming soon,
+      'use_recaptcha' => false,
+      'google_recaptcha_site_key' => null,
+      'google_recaptcha_secret_key' => null
     );
 
     // we need this to uniquely identify the form conf that will get created or loaded
@@ -230,6 +233,21 @@ class MrSpicy {
     ]);
 
     $this->conf_instance->set(
+      'use_recaptcha',
+      $this->settings['use_recaptcha']
+    );
+
+    $this->conf_instance->set(
+      'google_recaptcha_site_key',
+      $this->settings['google_recaptcha_site_key']
+    );
+
+    $this->conf_instance->set(
+      'google_recaptcha_secret_key',
+      $this->settings['google_recaptcha_secret_key']
+    );
+
+    $this->conf_instance->set(
       'post_name',
       $this->conf_machine_name
     );
@@ -246,7 +264,7 @@ class MrSpicy {
 
     /* Do not save settings if locked (prevents extra db/backend work)
      * Checking for the prod environment could
-     *  be one way automatically turning the lock on or off
+     *  be one way of automatically turning the lock on or off
      */
     if(!($this->settings['lock'] && $this->conf_instance->get('ID'))) {
       // if the entry doesn't exist create it in the db
@@ -332,7 +350,7 @@ class MrSpicy {
       }
 
       if(in_array($key, array('form_messages','post_content', 'edit_link'))) continue;
-      if(in_array($key, array('post_content', 'edit_link'))) continue;
+      if(in_array($key, array('post_content', 'edit_link', 'recaptcha'))) continue;
       $fields_raw[$key] = $arg_key_values;
       if(isset($key) && !array_key_exists('type', $fields_raw[$key])) {
         $fields_raw[$key]['type'] = 'text';
@@ -424,6 +442,10 @@ class MrSpicy {
       $this->settings['use_ajax'],
       ($this->settings['novalidate']) ? 'novalidate' : ''
     );
+
+    if($this->settings['use_recaptcha']) {
+      $html[] = '<script src="https://www.google.com/recaptcha/api.js"></script>';
+    }
 
     // get neccessary fields CSRF protection
     $form_entry_helper = new \FormEntry;
@@ -586,6 +608,18 @@ class MrSpicy {
 
 
   /**
+   * render a Google Recaptcha
+   * @return string
+   */
+  private function renderGoogleRecaptcha() {
+    return sprintf(
+      '<div class="g-recaptcha" data-sitekey="%s"></div>',
+      $this->settings['google_recaptcha_site_key']
+    );
+  }
+
+
+  /**
    * Get an array of field key => value (specifically for custom rendering of values)
    * @param $field_values array
    * @return array
@@ -631,7 +665,9 @@ class MrSpicy {
     $rendered_fields['post_content'] = $this->conf_instance->getTheContent();
     $rendered_fields['edit_link'] = $this->renderFormEditLink();
     $rendered_fields['form_messages'] = $this->renderMessages();
-
+    if($this->settings['use_recaptcha']) {
+      $rendered_fields['recaptcha'] = $this->renderGoogleRecaptcha();
+    }
     $rendered_fields = array_merge(
       $rendered_fields,
       $this->getFieldValuesOfCustomRendered($field_values),
@@ -763,13 +799,20 @@ class MrSpicy {
     $invalid_array = [];
     $fields = unserialize(unserialize($form_config->get('fields')));
 
-
     if(
       $form_config->get('use_honeypot')
       && array_key_exists($form_config->get('honeypot_field_name'), $_POST)
     ) {
       $fields['honeypot'] = [];
       $source_fields['honeypot'] = $_POST[$form_config->get('honeypot_field_name')];
+    }
+
+    if(
+      $form_config->get('use_recaptcha')
+      && array_key_exists('g-recaptcha-response', $_POST)
+    ) {
+      $fields['recaptcha'] = array('type' => 'hidden');
+      $source_fields['recaptcha'] = $_POST['g-recaptcha-response'];
     }
 
     foreach($fields as $k => $v) {
@@ -797,6 +840,9 @@ class MrSpicy {
       }
       if($form_config->get('use_honeypot') && $k === 'honeypot') {
         $validation_types['checkHoneyPot'] = 1;
+      }
+      if($form_config->get('use_recaptcha') && $k == 'recaptcha') {
+        $validation_types['isGCaptchaFieldInValid'] = $form_config->get('google_recaptcha_secret_key');
       }
 
       if(\AppLibrary\Arr::iterable($validation_types)) {

@@ -90,4 +90,44 @@ trait FormValidators {
     }
     return false;
   }
+
+
+  /**
+   * check if Google Recaptcha value is valid
+   * @param  $value string
+   * @return $property_value string
+   */
+  public function isGCaptchaFieldInValid($value, $property_value) {
+
+    if(!strlen($value)) {
+      return true;
+    }
+      $fields = array(
+    	'secret' => $property_value,
+    	'response' => $value
+    );
+    $fields_string = '';
+    foreach($fields as $key => $value) {
+      $fields_string .= $key.'='.$value.'&';
+    }
+    rtrim($fields_string, '&');
+
+    $ch = curl_init();
+    $timeout = 10;
+    curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result);
+
+    if($data->success != 1) {
+      return true;
+    }
+    return false;
+  }
 }
