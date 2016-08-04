@@ -338,7 +338,9 @@ In your settings just pass this in:
 Currently there isn't a custom error message for honeypot fields.
 It's probably better not to be obvious about it.
 
-###### Google Recaptcha
+###### Google reCAPTCHA
+Before using Google's reCAPTCHA with a Mr. Spicy form, you will need a Google account and have to register your site. Immediately following, take note of the site and secret keys that Google provides, as you will need to use this in the form settings.
+
 ```php
     array(
       ...
