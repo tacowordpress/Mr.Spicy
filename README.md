@@ -343,8 +343,8 @@ It's probably better not to be obvious about it.
     array(
       ...
       'use_recaptcha' => true,
-      'google_recaptcha_site_key' => {{your_google_recaptcha_site_key}},
-      'google_recaptcha_secret_key' => {{your_google_recaptcha_secret_key}}
+      'google_recaptcha_site_key' => $google_recaptcha_site_key,
+      'google_recaptcha_secret_key' => $google_recaptcha_secret_key
       
       // let's also keep the honeypot
       'use_honeypot' => true,
