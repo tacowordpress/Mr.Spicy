@@ -28,6 +28,18 @@ class FormConfBase extends \Taco\Post {
       ),
       'honeypot_field_name' => array(
         'type' => 'hidden'
+      ),
+      'use_recaptcha' => array(
+        'type' => 'hidden'
+      ),
+      'google_recaptcha_site_key' => array(
+        'type' => 'hidden'
+      ),
+      'google_recaptcha_secret_key' => array(
+        'type' => 'hidden'
+      ),
+      'g-recaptcha-response' => array(
+        'type' => 'hidden'
       )
     );
   }
