@@ -71,7 +71,10 @@ These are the properties and values (defaults shown below) that can be used to s
       'success_redirect_url' => null,
       'label_field_wrapper' => 'MrSpicy::rowColumnWrap',
       'use_honeypot' => true,
-      'honeypot_field_name' => 'your_website_url'
+      'honeypot_field_name' => 'your_website_url',
+      'use_recaptcha' => false,
+      'google_recaptcha_site_key' => null,
+      'google_recaptcha_secret_key' => null
     );
 ```
 Details on what each property/value does is coming soon.
@@ -322,7 +325,7 @@ A form developed using MrSpicy has the data attribute "data-form-status". You ca
 
 ##### Form Security
 
-Mr. Spicy forms has backend validation, but if you needed some extra help, you can use the honeypot option.
+Mr. Spicy forms has backend validation, but if you needed some extra help, you can use the honeypot and Google Recaptcha options.
 In your settings just pass this in:
 
 ```php
@@ -334,6 +337,20 @@ In your settings just pass this in:
 ```
 Currently there isn't a custom error message for honeypot fields.
 It's probably better not to be obvious about it.
+
+###### Google Recaptcha
+```php
+    array(
+      ...
+      'use_recaptcha' => true,
+      'google_recaptcha_site_key' => {{your_google_recaptcha_site_key}},
+      'google_recaptcha_secret_key' => {{your_google_recaptcha_secret_key}}
+      
+      // let's also keep the honeypot
+      'use_honeypot' => true,
+      'honeypot_field_name' => 'your_website_url'
+    );
+```
 
 
 ##### Further Customization
