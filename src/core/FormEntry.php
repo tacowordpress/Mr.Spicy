@@ -140,14 +140,29 @@ class FormEntry extends \Taco\Post {
     return true;
   }
 
-  public function getAdminColumns() {
-    return array('form_config');
+  public static function getAdditionalSharedColumns() {
+    if(!file_exists($defaults_file = __DIR__.'/../forms-defaults.php')) {
+      return [];
+    }
+    $form_config_defaults = include $defaults_file;
+    if(!array_key_exists('shared_configuration_extra_fields', $form_config_defaults)) {
+      return [];
+    }
+    return $form_config_defaults['shared_configuration_extra_fields'];
   }
-  
+
+  public function getAdminColumns() {
+    $additional_shared_columns = self::getAdditionalSharedColumns();
+    return array_merge(
+      $additional_shared_columns,
+      ['form_config']
+    );
+  }
+
   public function getPostTypeConfig() {
     return array_merge(parent::getPostTypeConfig(), array(
       'show_in_menu'=>'edit.php?post_type=form-config'
     ));
   }
-  
+
 }
