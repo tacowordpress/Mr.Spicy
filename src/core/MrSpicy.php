@@ -82,7 +82,13 @@ class MrSpicy {
     $conf_fields = $this->conf_instance->getFields();
 
     // load global defaults
-    $global_defaults = include __DIR__.'/../forms-defaults.php';
+    // TODO: find a better way than using a global
+    global $mr_spicy_forms_defaults_path;
+    if(strlen($mr_spicy_forms_defaults_path)) {
+      $global_defaults = include $mr_spicy_forms_defaults_path;
+    } else {
+      $global_defaults = include __DIR__.'/../forms-defaults.php';
+    }
 
     // get the default form action
     $defaults['action'] = array_key_exists('form_action', $global_defaults)
@@ -1041,5 +1047,28 @@ class MrSpicy {
       return self::$session_field_values[$key];
     }
     return false;
+  }
+
+
+  /**
+   * get the shared configuration file for Mr. Spicy forms
+   * @return string
+   */
+  public static function getDefaultsFile() {
+    // TODO: find a better way than using a global
+    global $mr_spicy_forms_defaults_path;
+    if(strlen($mr_spicy_forms_defaults_path) && file_exists($mr_spicy_forms_defaults_path)) {
+      return $mr_spicy_forms_defaults_path;
+    }
+    return __DIR__.'/../forms-defaults.php';
+  }
+
+
+  /**
+   * get the shared Mr. Spicy Configuration
+   * @return array
+   */
+  public static function getDefaultsArray() {
+    return include self::getDefaultsFile();
   }
 }

@@ -141,10 +141,7 @@ class FormEntry extends \Taco\Post {
   }
 
   public static function getAdditionalSharedColumns() {
-    if(!file_exists($defaults_file = __DIR__.'/../forms-defaults.php')) {
-      return [];
-    }
-    $form_config_defaults = include $defaults_file;
+    $form_config_defaults = \Taco\MrSpicy::getDefaultsArray();
     if(!array_key_exists('shared_configuration_extra_fields', $form_config_defaults)) {
       return [];
     }
