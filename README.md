@@ -5,7 +5,7 @@ The objective of Mr. Spicy (forms), is to literally allow you to make a form in 
 ## A Basic example
 ```php
 <?php
-$contact_form_config = new MrSpicy(
+$contact_form_config = new \Taco\MrSpicy(
   array(
     'conf_name' => 'General Contact Form Configuration',
     'fields' => array(
@@ -69,7 +69,7 @@ These are the properties and values (defaults shown below) that can be used to s
       'success_message' => null,
       'error_message' => null,
       'success_redirect_url' => null,
-      'label_field_wrapper' => 'MrSpicy::rowColumnWrap',
+      'label_field_wrapper' => '\Taco\MrSpicy::rowColumnWrap',
       'use_honeypot' => true,
       'honeypot_field_name' => 'your_website_url',
       'use_recaptcha' => false,
@@ -86,7 +86,7 @@ The simplicity of Mr. Spicy doesn't stop with the above. Custom rendering of a f
 ```php
 <?php
 
-echo (new MrSpicy(
+echo (new \Taco\MrSpicy(
   array(
     'conf_name' => 'General Contact Form Configuration',
     'novalidate' => true,
@@ -141,7 +141,7 @@ The below example demonstrates a few things: customizing the form's general succ
 ```php
 <?php
 
-echo (new MrSpicy(
+echo (new \Taco\MrSpicy(
   array(
     'conf_name' => 'General Contact Form Configuration',
     'novalidate' => true,
@@ -203,7 +203,7 @@ You will notice how you close php to start defining your custom template. If you
 
 ```php
 
-<?php $contact_form = new MrSpicy(
+<?php $contact_form = new \Taco\MrSpicy(
   array(
     'conf_name' => 'Contact Form Configuration',
     'fields' => 'auto', // don't define the fields here
@@ -269,7 +269,7 @@ Yes, we are defining the fields in the template.
 ##### Callbacks (events)
 Giving "on_success" a value of closure in the form's conf settings will allow you to trigger a function/method after the form's success.
 ```php
-$my_contact_form = new MrSpicy(
+$my_contact_form = new \Taco\MrSpicy(
   array(
     'conf_name' => 'contact form configuration',
     'on_success' => function($entry_object, $form_conf) {
@@ -383,7 +383,7 @@ the form fields out how you would normally do it. Just keep the field names the 
 ```php
 <?php
 
-echo (new MrSpicy(
+echo (new \Taco\MrSpicy(
   array(
     'conf_name' => 'General Contact Form Configuration',
       'first_name' => array('type' => 'text', 'required' => true),
