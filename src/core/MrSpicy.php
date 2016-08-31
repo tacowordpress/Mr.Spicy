@@ -9,6 +9,7 @@ class MrSpicy {
 
   private $settings = [];
   private static $defaults_path = null;
+  private static $submit_action_uri = '';
 
   public static $invalid = false;
   public static $success = false;
@@ -34,6 +35,8 @@ class MrSpicy {
    * @return MrSpicy object
    */
   public function __construct($args, $template_callback=null) {
+    // set submit action uri
+    self::setSubmitActionURI();
 
     $defaults = array(
       'conf_name' => '',
@@ -92,9 +95,9 @@ class MrSpicy {
     }
 
     // get the default form action
-    $defaults['action'] = array_key_exists('form_action', $global_defaults)
+    $defaults['action'] = (array_key_exists('form_action', $global_defaults) && !is_null($global_defaults['form_action']))
       ? $global_defaults['form_action']
-      : null;
+      : self::getSubmitActionURI();
 
     // assign only the fields specified above and in the form conf
     foreach($args as $k => $v) {
@@ -1079,5 +1082,21 @@ class MrSpicy {
    */
   public static function getDefaultsArray() {
     return include self::getDefaultsFile();
+  }
+
+  /**
+   * get the submit action uri
+   * @return string
+   */
+  public static function getSubmitActionURI() {
+    return self::$submit_action_uri;
+  }
+
+  /**
+   * set the submit action uri
+   * @return string
+   */
+  public static function setSubmitActionURI() {
+     self::$submit_action_uri = strstr(__DIR__.'/FormSubmit.php', '/wp-content');
   }
 }
