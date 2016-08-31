@@ -8,6 +8,7 @@ class MrSpicy {
   use \Taco\FormValidators;
 
   private $settings = [];
+  private static $defaults_path = null;
 
   public static $invalid = false;
   public static $success = false;
@@ -1051,14 +1052,22 @@ class MrSpicy {
 
 
   /**
+   * set the defaults path (should be in a folder outside of vendor that won't get overriden)
+   * @param $path string
+   */
+  public static function setDefaultsPath($path) {
+    self::$defaults_path = $path;
+  }
+
+
+  /**
    * get the shared configuration file for Mr. Spicy forms
    * @return string
    */
   public static function getDefaultsFile() {
-    // TODO: find a better way than using a global
-    global $mr_spicy_forms_defaults_path;
-    if(strlen($mr_spicy_forms_defaults_path) && file_exists($mr_spicy_forms_defaults_path)) {
-      return $mr_spicy_forms_defaults_path;
+    $defaults_path = self::$defaults_path;
+    if(strlen($defaults_path) && file_exists($defaults_path)) {
+      return $defaults_path;
     }
     return __DIR__.'/../forms-defaults.php';
   }
