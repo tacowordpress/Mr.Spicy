@@ -1097,6 +1097,15 @@ class MrSpicy {
    * @return string
    */
   public static function setSubmitActionURI() {
-     self::$submit_action_uri = strstr(__DIR__.'/FormSubmit.php', '/wp-content');
+    $default_settings = self::getDefaultsArray();
+    if(
+      array_key_exists('form_action', $default_settings)
+      && $default_settings['form_action'] !== null
+      && strlen($default_settings['form_action']))
+    {
+      self::$submit_action_uri = $default_settings['form_action'];
+      return;
+    }
+    self::$submit_action_uri = strstr(__DIR__.'/FormSubmit.php', '/wp-content');
   }
 }
