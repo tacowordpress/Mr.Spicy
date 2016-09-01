@@ -441,7 +441,7 @@ There are some settings you may wish to customize. These properties are however 
 These are the current global settings you can override:
 ```php
 return array(
-  'form_action' => '/{$path_to_vendor}/tacowordpress/mr-spicy/src/core/FormSubmit.php', // important
+  'form_action' => null, // This is set automatically, but you can override it.
   'error_message' => 'There were some errors with your form submission. Please correct and try again.',
   'success_message' => 'Thanks for your message',
   'shared_configuration_extra_fields' => [] // use this if you need common (shared across all form configurations) admin columns like "email" or "name" to be added
