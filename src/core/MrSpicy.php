@@ -720,7 +720,7 @@ class MrSpicy {
   public function renderCheckBox($key, $value) {
     $html = [];
     $html[] = sprintf(
-      '<label for="%s">%s %s</label>',
+      '<label for="%s">%s <span>%s</span></label>',
       \AppLibrary\Str::machine($key, '-'),
       $this->conf_instance->getRenderPublicField($key, $value),
       \AppLibrary\Str::human($key)
