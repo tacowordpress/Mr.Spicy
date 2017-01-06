@@ -156,9 +156,11 @@ class FormEntry extends \Taco\Post {
     );
   }
 
-  public function getPostTypeConfig() {
+   public function getPostTypeConfig() {
     return array_merge(parent::getPostTypeConfig(), array(
-      'show_in_menu'=>'edit.php?post_type=form-config'
+      'show_in_menu'=>'edit.php?post_type=form-config',
+      'publicly_queryable' => false,
+      'exclude_from_search' => true
     ));
   }
 
