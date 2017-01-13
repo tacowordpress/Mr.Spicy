@@ -40,6 +40,7 @@ class MrSpicy {
 
     $defaults = array(
       'conf_name' => '',
+      'api_key' => null,
       'fields' => array(),
       'css_class' => '',
       'id' => '',
@@ -67,21 +68,19 @@ class MrSpicy {
     );
 
     // we need this to uniquely identify the form conf that will get created or loaded
-    if(!(array_key_exists('conf_name', $args)
-      && strlen($args['conf_name']))) {
-        throw new Exception('conf_name must be defined in the args array');
+    if(!(array_key_exists('api_key', $args)
+      && strlen($args['api_key']))) {
+        throw new \Exception('"api_key" must be defined in the args array');
         exit;
     }
 
     // if the form configuration exists, load it
-    $db_conf = $this->findFormConfigInstance($args['conf_name']);
-
-    if($db_conf) {
-      $this->conf_instance = $db_conf;
-    } else {
-      $this->conf_instance = new \FormConfig;
-      $this->conf_instance->set('unique_id', md5($args['conf_name']));
+    $db_conf = $this->findFormConfigInstance($args['api_key']);
+    if(!$db_conf) {
+      throw new \Exception('The API key is invalid.');
+      exit;
     }
+    $this->conf_instance = $db_conf;
 
     $conf_fields = $this->conf_instance->getFields();
 
@@ -312,9 +311,9 @@ class MrSpicy {
    * find a form conf taco object in the db
    * @return $this
    */
-  private function findFormConfigInstance($conf_name) {
+  private function findFormConfigInstance($api_key) {
     $db_instance = \FormConfig::getOneBy(
-      'unique_id', md5($conf_name)
+      'api_key', $api_key
     );
     if(\AppLibrary\Obj::iterable($db_instance)) {
       return $db_instance;
