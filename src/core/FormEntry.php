@@ -8,21 +8,49 @@ class FormEntry extends \Taco\Post {
   public function getFields() {
     $fields = array(
       'form_config' => array(
-        'type' => 'select',
-        'options' => self::getFormConfigs(),
+        'type' => 'hidden'
       ),
       'captured_data' => [
         'type' => 'hidden',
         'readonly' => true
-      ]
+      ],
+      'fields_and_values' => ['type' => 'textarea']
     );
     $form_conf_fields = self::getFieldsFromFormEntryConf();
+
     return array_merge(
       $fields,
       $form_conf_fields
     );
   }
 
+  public function getFieldsAndValues() {
+    $data = json_decode($this->get('captured_data'));
+    $html = [];
+    $html[] = '<table style="text-align: left;"><tr><th style="border-bottom: solid 1px #CCC;">Fields</th><th style="padding-left: 15%; border-bottom: solid 1px #CCC;">Values</th></tr>';
+    foreach($data as $k => $v) {
+      if($k == 'form_configuration' && !strlen($v)) {
+        $v = 'Does not exist.';
+      }
+      $html[] = '<tr><td><strong style="color: #00000; font-size: 14px;">'.$k.'</strong></td><td style="padding-left: 15%;">'.$v."</td></tr>";
+    }
+    $html[] = '</table>';
+    return join('', $html);
+  }
+
+  public function getRenderMetaBoxField($name, $field) {
+    if($name === 'fields_and_values') {
+      $html = [];
+      $html[] = sprintf('<div style="width: 100%%;">%s</div>', $this->getFieldsAndValues());
+      return join('', $html);
+    }
+
+    return parent::getRenderMetaBoxField($name, $field);
+  }
+
+  public function getMetaBoxes() {
+    return ['fields_and_values'];
+  }
 
   public function loadFormConfig() {
     if(!$this->form_config_id) {
@@ -77,9 +105,9 @@ class FormEntry extends \Taco\Post {
     return true;
   }
 
-  public function save() {
+  public function save($exclude_post=false) {
     \Taco\MrSpicy::setSuccess();
-    $fields = $this->getFields();
+    $fields = $this->getFieldsFromFormEntryConf();
     $captured_data = [];
     foreach($fields as $k => $v) {
       if($k === 'captured_data' || $k === 'form_config') continue;
@@ -88,7 +116,7 @@ class FormEntry extends \Taco\Post {
     $form_config = \FormConfig::find($this->get('form_config'));
     $captured_data['form_configuration'] = $form_config->get('post_title');
     $this->set('captured_data', json_encode($captured_data));
-    return parent::save();
+    return parent::save($exclude_post);
   }
 
 
@@ -138,6 +166,10 @@ class FormEntry extends \Taco\Post {
 
   public function excludeFromSearch() {
     return true;
+  }
+
+  public function getSupports() {
+    return ['none'];
   }
 
   public static function getAdditionalSharedColumns() {
