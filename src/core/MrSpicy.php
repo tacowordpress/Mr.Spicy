@@ -39,7 +39,7 @@ class MrSpicy {
     self::setSubmitActionURI();
 
     $defaults = array(
-      'form_uniqiue_key' => null,
+      'form_unique_key' => null,
       'fields' => array(),
       'css_class' => '',
       'id' => '',
@@ -67,14 +67,14 @@ class MrSpicy {
     );
 
     // we need this to uniquely identify the form conf that will get created or loaded
-    if(!(array_key_exists('form_uniqiue_key', $args)
-      && strlen($args['form_uniqiue_key']))) {
-        throw new \Exception('"form_uniqiue_key" must be defined in the args array');
+    if(!(array_key_exists('form_unique_key', $args)
+      && strlen($args['form_unique_key']))) {
+        throw new \Exception('"form_unique_key" must be defined in the args array');
         exit;
     }
 
     // if the form configuration exists, load it
-    $db_conf = $this->findFormConfigInstance($args['form_uniqiue_key']);
+    $db_conf = $this->findFormConfigInstance($args['form_unique_key']);
     if(!$db_conf) {
       throw new \Exception('The Form\'s unique key is invalid.');
       exit;
@@ -301,9 +301,9 @@ class MrSpicy {
    * find a form conf taco object in the db
    * @return $this
    */
-  private function findFormConfigInstance($form_uniqiue_key) {
+  private function findFormConfigInstance($form_unique_key) {
     $db_instance = \FormConfig::getOneBy(
-      'form_uniqiue_key', $form_uniqiue_key
+      'form_unique_key', $form_unique_key
     );
     if(\AppLibrary\Obj::iterable($db_instance)) {
       return $db_instance;
