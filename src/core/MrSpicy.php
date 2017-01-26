@@ -39,7 +39,7 @@ class MrSpicy {
     self::setSubmitActionURI();
 
     $defaults = array(
-      'conf_name' => '',
+      'form_uniqiue_key' => null,
       'fields' => array(),
       'css_class' => '',
       'id' => '',
@@ -67,21 +67,19 @@ class MrSpicy {
     );
 
     // we need this to uniquely identify the form conf that will get created or loaded
-    if(!(array_key_exists('conf_name', $args)
-      && strlen($args['conf_name']))) {
-        throw new Exception('conf_name must be defined in the args array');
+    if(!(array_key_exists('form_uniqiue_key', $args)
+      && strlen($args['form_uniqiue_key']))) {
+        throw new \Exception('"form_uniqiue_key" must be defined in the args array');
         exit;
     }
 
     // if the form configuration exists, load it
-    $db_conf = $this->findFormConfigInstance($args['conf_name']);
-
-    if($db_conf) {
-      $this->conf_instance = $db_conf;
-    } else {
-      $this->conf_instance = new \FormConfig;
-      $this->conf_instance->set('unique_id', md5($args['conf_name']));
+    $db_conf = $this->findFormConfigInstance($args['form_uniqiue_key']);
+    if(!$db_conf) {
+      throw new \Exception('The Form\'s unique key is invalid.');
+      exit;
     }
+    $this->conf_instance = $db_conf;
 
     $conf_fields = $this->conf_instance->getFields();
 
@@ -205,9 +203,6 @@ class MrSpicy {
       $this->settings['label_field_wrapper'] = $wrapper_callable;
     }
 
-    // assign post title to instance
-    $this->conf_instance->set('post_title', $this->get('conf_name'));
-
     if($this->settings['fields'] !== 'auto') {
       $this->conf_instance->set('fields', serialize($this->fields));
     }
@@ -230,12 +225,6 @@ class MrSpicy {
           1
         );
     }
-
-    // assign conf machine name
-    $this->conf_machine_name = \AppLibrary\Str::machine(
-      $this->get('conf_name'),
-      '-'
-    );
 
     $this->conf_instance->assign([
       'use_honeypot' => $this->settings['use_honeypot'],
@@ -312,9 +301,9 @@ class MrSpicy {
    * find a form conf taco object in the db
    * @return $this
    */
-  private function findFormConfigInstance($conf_name) {
+  private function findFormConfigInstance($form_uniqiue_key) {
     $db_instance = \FormConfig::getOneBy(
-      'unique_id', md5($conf_name)
+      'form_uniqiue_key', $form_uniqiue_key
     );
     if(\AppLibrary\Obj::iterable($db_instance)) {
       return $db_instance;
@@ -530,9 +519,6 @@ class MrSpicy {
         $v['id'] = $id;
       }
 
-      $hidden_class = ($this->hide_labels)
-        ? 'hide_label'
-        : '';
 
       // does this field have an error
       $has_error = self::hasError($k);
@@ -554,16 +540,7 @@ class MrSpicy {
         continue;
       }
 
-      $label_string = (array_key_exists('label', $v))
-        ? $v['label']
-        : $k;
-
-      $label = sprintf(
-        '<label for="%s" class="%s">%s</label>',
-        $id,
-        $hidden_class,
-        \AppLibrary\Str::human($label_string)
-      );
+      $label = self::getLabelHTML($k, $v);
 
       if($this->get('hide_labels')
         && !array_key_exists('placeholder', $v)) {
@@ -585,6 +562,35 @@ class MrSpicy {
     return (!$return_as_array)
       ? join('', $html)
       : $html;
+  }
+
+
+  /**
+   * Get the HTML for a label
+   * @param $key string
+   * @param $field_attribs array
+   * @return HTML
+   */
+  public function getLabelHTML($key, $field_attribs) {
+    $hidden_class = ($this->hide_labels)
+      ? 'hide_label'
+      : '';
+
+    $label_string = (array_key_exists('label', $field_attribs))
+      ? $field_attribs['label']
+      : $key;
+
+    $required = '';
+    if(array_key_exists('required', $field_attribs)) {
+      $required = '<span>*</span>';
+    }
+    return sprintf(
+      '<label for="%s" class="%s">%s %s</label>',
+      $id,
+      $hidden_class,
+      \AppLibrary\Str::human($label_string),
+      $required
+    );
   }
 
 
