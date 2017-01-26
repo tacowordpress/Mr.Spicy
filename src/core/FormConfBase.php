@@ -6,7 +6,7 @@ class FormConfBase extends \Taco\Post {
 
   public function getFields() {
     return array(
-      'form_uniqiue_key' => ['type' => 'text'],
+      'form_unique_key' => ['type' => 'text'],
       'fields' => array('type' => 'hidden'),
       'form_description' => array('type' => 'textarea'),
       'admin_emails' => array('type' => 'text'),
@@ -45,9 +45,9 @@ class FormConfBase extends \Taco\Post {
   }
 
   public function getRenderMetaBoxField($name, $field) {
-    if($name === 'form_uniqiue_key') {
+    if($name === 'form_unique_key') {
       $html = [];
-      $html[] = sprintf('<input name="form_uniqiue_key" placeholder="example: site-contact-form-1" type="text" style="width: 100%%;" value="%s">', $this->get('form_uniqiue_key'));
+      $html[] = sprintf('<input name="form_unique_key" placeholder="example: site-contact-form-1" type="text" style="width: 100%%;" value="%s">', $this->get('form_unique_key'));
       $html[] = '<br><br><span><strong>Developers:</strong> To use, copy and paste in your code.</span><br><br>';
       return join('', $html);
     }
