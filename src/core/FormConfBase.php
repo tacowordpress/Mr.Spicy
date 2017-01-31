@@ -44,7 +44,7 @@ class FormConfBase extends \Taco\Post {
     );
   }
 
-  public function getRenderMetaBoxField($name, $field) {
+  public function getRenderMetaBoxField($name, $field=null) {
     if($name === 'form_unique_key') {
       $html = [];
       $html[] = sprintf('<input name="form_unique_key" placeholder="example: site-contact-form-1" type="text" style="width: 100%%;" value="%s">', $this->get('form_unique_key'));
