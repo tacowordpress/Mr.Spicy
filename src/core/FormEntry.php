@@ -38,7 +38,7 @@ class FormEntry extends \Taco\Post {
     return join('', $html);
   }
 
-  public function getRenderMetaBoxField($name, $field) {
+  public function getRenderMetaBoxField($name, $field=null) {
     if($name === 'fields_and_values') {
       $html = [];
       $html[] = sprintf('<div style="width: 100%%;">%s</div>', $this->getFieldsAndValues());
