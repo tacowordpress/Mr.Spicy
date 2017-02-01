@@ -138,7 +138,7 @@ class FormEntry extends \Taco\Post {
     }
 
     if(is_admin()) {
-      if($_GET['post']) {
+      if(array_key_exists('post', $_GET)) {
         return $_GET['post'];
       }
       if(!array_key_exists('post', $_GET)
