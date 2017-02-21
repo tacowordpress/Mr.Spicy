@@ -265,7 +265,7 @@ class MrSpicy {
      * Checking for the prod environment could
      *  be one way of automatically turning the lock on or off
      */
-    if(!($this->settings['lock'] && $this->conf_instance->get('ID'))) {
+    if(!$this->settings['lock']) {
       // if the entry doesn't exist create it in the db
       $this->conf_ID = $this->conf_instance->save();
       // get the updated form conf after save
