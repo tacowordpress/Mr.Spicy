@@ -270,16 +270,16 @@ class MrSpicy {
      *  be one way of automatically turning the lock on or off
      */
 
-   
-     
-     
+  
     if($this->settings['lock'] == false) {
       // if the entry doesn't exist create it in the db
       $this->conf_ID = $this->conf_instance->save();
       // get the updated form conf after save
       $this->conf_instance = \FormConfig::find($this->conf_ID);
+    } else {
+      $temp_conf = $this->findFormConfigInstance($args['form_unique_key']);
+      $this->conf_ID = $temp_conf->ID;
     }
-
     return $this;
   }
 
