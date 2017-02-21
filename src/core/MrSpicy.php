@@ -113,6 +113,10 @@ class MrSpicy {
       }
     }
 
+    if(array_key_exists('lock', $args)) {
+      $this->settings['lock'] = $args['lock'];
+    }
+
 
     /* We cannot use a closure with an event callback
      *  where a redirect url is defined
@@ -192,6 +196,7 @@ class MrSpicy {
       $this->settings
     );
 
+
     // wrapper label/field method (is it the default, and is it a method or func?)
     if(is_string($this->settings['label_field_wrapper'])) {
       $wrapper_callable = explode(
@@ -259,13 +264,16 @@ class MrSpicy {
         $this->settings['success_redirect_url']
       );
     }
-
-
+ 
     /* Do not save settings if locked (prevents extra db/backend work)
      * Checking for the prod environment could
      *  be one way of automatically turning the lock on or off
      */
-    if(!$this->settings['lock']) {
+
+   
+     
+     
+    if($this->settings['lock'] == false) {
       // if the entry doesn't exist create it in the db
       $this->conf_ID = $this->conf_instance->save();
       // get the updated form conf after save
@@ -357,7 +365,9 @@ class MrSpicy {
     }
     $this->fields = $fields_raw;
     $this->conf_instance->set('fields', serialize($fields_raw));
-    $this->conf_instance->save();
+    if($this->settings['lock'] == false) {
+      $this->conf_instance->save();    
+    }
 
     return $this->convertToPropperTemplate(
       $html_template
