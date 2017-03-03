@@ -54,12 +54,13 @@ These are the properties and values (defaults shown below) that can be used to s
 ```php
 
     array(
-      'conf_name' => '',
+      'form_unique_key' => '',
       'fields' => array(),
       'css_class' => '',
       'id' => '',
       'method' => 'post', // currently only works with POST
       'action' => null,
+      'lock' => (ENVIRONMENT == 'prod') // set this to true in production environments
       'novalidate' => false,
       'use_ajax' => false, // coming soon
       'hide_labels' => false,
@@ -146,7 +147,7 @@ echo (new \Taco\MrSpicy(
     'conf_name' => 'General Contact Form Configuration',
     'novalidate' => true,
     'success_message' => 'Success! Thanks for your inquiry.',
-    'error_message' => 'Oops! Looks like there was an error in the form. Please correct and try again.'
+    'error_message' => 'Oops! Looks like there was an error in the form. Please correct and try again.',
     'fields' => array(
       'first_name' => array(),
       'last_name' => array(),
@@ -205,7 +206,7 @@ You will notice how you close php to start defining your custom template. If you
 
 <?php $contact_form = new \Taco\MrSpicy(
   array(
-    'conf_name' => 'Contact Form Configuration',
+    'form_unique_key' => 'Contact Form Configuration',
     'fields' => 'auto', // don't define the fields here
   )
 ); ?>
@@ -271,7 +272,7 @@ Giving "on_success" a value of closure in the form's conf settings will allow yo
 ```php
 $my_contact_form = new \Taco\MrSpicy(
   array(
-    'conf_name' => 'contact form configuration',
+    'form_unique_key' => 'contact-form-configuration',
     'on_success' => function($entry_object, $form_conf) {
 
       // send mail on the form's success
@@ -385,7 +386,7 @@ the form fields out how you would normally do it. Just keep the field names the 
 
 echo (new \Taco\MrSpicy(
   array(
-    'conf_name' => 'General Contact Form Configuration',
+    'form_unique_key' => 'general-contact-form-configuration',
       'first_name' => array('type' => 'text', 'required' => true),
       'last_name' => array(),
       'email' => array('type' => 'email', 'required' => true),
